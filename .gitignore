@@ -7,3 +7,6 @@ data/raw/*
 data/processed/*
 .ipynb_checkpoints/
 .vscode/
+.env.*
+!.env.example
+data/

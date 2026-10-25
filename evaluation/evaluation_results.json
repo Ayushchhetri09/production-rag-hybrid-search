@@ -1,0 +1,66 @@
+{
+  "summary": {
+    "questions_evaluated": 2,
+    "hit_at_5": 1.0,
+    "mrr_at_5": 1.0,
+    "recall_at_5": 1.0
+  },
+  "results": [
+    {
+      "question": "What is  Fusion?",
+      "hit_at_5": 1.0,
+      "mrr_at_5": 1.0,
+      "recall_at_5": 1.0,
+      "retrieved_pages": [
+        [
+          "Deo_Graph Theory.pdf",
+          48
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          340
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          424
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          587
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          395
+        ]
+      ]
+    },
+    {
+      "question": "What outweighs the value of the farm?",
+      "hit_at_5": 1.0,
+      "mrr_at_5": 1.0,
+      "recall_at_5": 1.0,
+      "retrieved_pages": [
+        [
+          "Thoreau, Henry D. - Walden_.pdf",
+          49
+        ],
+        [
+          "Thoreau, Henry D. - Walden_.pdf",
+          47
+        ],
+        [
+          "Thoreau, Henry D. - Walden_.pdf",
+          24
+        ],
+        [
+          "Thoreau, Henry D. - Walden_.pdf",
+          62
+        ],
+        [
+          "Thoreau, Henry D. - Walden_.pdf",
+          50
+        ]
+      ]
+    }
+  ]
+}
