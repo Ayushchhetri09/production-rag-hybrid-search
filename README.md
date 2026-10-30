@@ -1,180 +1,349 @@
 # Production RAG with Hybrid Search
 
-A Retrieval-Augmented Generation (RAG) application that combines semantic search, keyword-based retrieval, result fusion, and reranking to answer questions from documents with relevant source references.
+A production-oriented Retrieval-Augmented Generation (RAG) application that combines semantic search, keyword retrieval, Reciprocal Rank Fusion (RRF), and CrossEncoder reranking to answer questions from documents.
 
-The project explores how retrieval quality can be improved by combining complementary search methods rather than relying on vector similarity alone.
+The application uses FastAPI for the backend, React for the frontend, Qdrant for vector storage, and Gemini for answer generation.
 
 ## Overview
 
-Traditional keyword search can miss semantically similar passages, while semantic search can overlook exact terms and specific phrases. This project combines both approaches to retrieve relevant document chunks before generating an answer with a large language model.
+Traditional RAG systems often rely only on semantic similarity. This project combines multiple retrieval methods to improve the discovery of relevant document passages.
 
-The application includes a Python backend and a React frontend, with local Qdrant storage for document embeddings and retrieval.
+The system retrieves candidate chunks using both dense semantic search and BM25 keyword search, fuses their rankings, reranks the candidates, and generates a grounded answer using the retrieved context.
 
-## Key Features
+### Key Features
 
-- **Hybrid retrieval:** Combines semantic retrieval with BM25 keyword search.
-- **Result fusion:** Uses Reciprocal Rank Fusion (RRF) to combine rankings from different retrieval methods.
-- **Reranking:** Reorders retrieved passages to improve relevance.
-- **RAG answer generation:** Uses the Gemini API to generate answers grounded in retrieved context.
-- **Source references:** Returns source document names, page numbers, and relevance scores.
-- **PDF ingestion:** Extracts document content and splits it into chunks for retrieval.
-- **Interactive frontend:** Provides a web interface for asking questions and viewing answers.
-- **Retrieval evaluation:** Includes scripts and question sets for examining retrieval performance.
+- PDF document ingestion and chunking
+- Dense semantic retrieval using vector embeddings
+- BM25 keyword-based retrieval
+- Reciprocal Rank Fusion for combining retrieval rankings
+- CrossEncoder-based reranking
+- Gemini-powered answer generation
+- Source document and page information in responses
+- Retrieval metadata and performance metrics
+- FastAPI backend with a React frontend
+- PDF upload and indexing endpoint
+- Automated tests using pytest
+- Retrieval evaluation using Hit@5, MRR@5, and Recall@5
 
 ## Architecture
 
-1. **Document ingestion:** Extract text from PDF documents.
-2. **Chunking:** Split extracted text into smaller passages.
-3. **Indexing:** Generate embeddings and store document chunks in Qdrant; prepare keyword-based retrieval data.
-4. **Hybrid retrieval:** Retrieve candidate passages using semantic search and BM25.
-5. **Rank fusion:** Combine candidate rankings using Reciprocal Rank Fusion.
-6. **Reranking:** Reorder retrieved passages based on relevance.
-7. **Generation:** Send the question and retrieved context to Gemini.
-8. **Response:** Return the generated answer and relevant source references to the frontend.
+```mermaid
+flowchart TD
+    A[PDF Documents] --> B[Document Ingestion]
+    B --> C[Text Extraction and Chunking]
+    C --> D[Embedding Generation]
+    D --> E[Qdrant Vector Store]
+    C --> F[BM25 Index]
 
-## Tech Stack
+    G[User Question] --> H[Semantic Search]
+    G --> I[BM25 Search]
 
-## Tech Stack
+    E --> H
+    F --> I
 
-- **Language:** Python 3.13
-- **Backend:** FastAPI
-- **Frontend:** React, Vite, JavaScript, CSS
-- **Vector database:** Qdrant (local storage)
-- **Embeddings:** Sentence Transformers with pretrained models from the Hugging Face ecosystem
-- **Retrieval:** Semantic search, BM25, Reciprocal Rank Fusion (RRF)
-- **Reranking:** Cross-encoder reranking using pretrained models
-- **LLM:** Google Gemini API
-- **Model ecosystem:** Hugging Face Hub for pretrained model access and downloads
-- **Testing and evaluation:** Python scripts, pytest, and retrieval evaluation metrics
+    H --> J[Reciprocal Rank Fusion]
+    I --> J
 
+    J --> K[CrossEncoder Reranker]
+    K --> L[Retrieved Context]
+    L --> M[Gemini Answer Generation]
 
-## Example
+    M --> N[Answer and Sources]
+    N --> O[React Frontend]
+```
 
-**Question:** What does Thoreau say about living deliberately?
+## Technology Stack
 
-**Answer:** Thoreau emphasizes that people should act deliberately and choose activities they can consciously justify to themselves.
+| Component | Technology |
+|---|---|
+| Backend API | FastAPI |
+| Frontend | React |
+| Frontend development server | Vite |
+| Model Hub | Hugging Face |
+| Vector database | Qdrant |
+| Semantic retrieval | Sentence Transformers |
+| Keyword retrieval | BM25 |
+| Rank fusion | Reciprocal Rank Fusion |
+| Reranking | CrossEncoder |
+| Answer generation | Gemini |
+| Testing | pytest |
+| Evaluation | Hit@5, MRR@5, Recall@5 |
 
-**Retrieved source:** *Walden* by Henry David Thoreau, page 27.
+## Retrieval Pipeline
 
-The application returns multiple relevant source passages alongside the generated answer.
+### 1. Semantic Search
+
+Dense embeddings are used to retrieve passages that are semantically related to the user's question, even when the wording differs.
+
+### 2. BM25 Keyword Search
+
+BM25 retrieves passages based on lexical similarity. This helps find exact terms, technical vocabulary, and keywords that may be important to the question.
+
+### 3. Reciprocal Rank Fusion
+
+The rankings from semantic search and BM25 are combined using Reciprocal Rank Fusion.
+
+The RRF score is calculated as:
+
+\[
+RRF(d)=\sum_{r\in R}\frac{1}{k+rank_r(d)}
+\]
+
+where:
+
+- \(d\) is a retrieved document chunk.
+- \(R\) represents the retrieval systems.
+- \(rank_r(d)\) is the rank of the chunk in a retrieval system.
+- \(k\) is a ranking constant.
+
+### 4. CrossEncoder Reranking
+
+The fused candidates are reranked using a CrossEncoder model that evaluates the relationship between the query and each candidate passage.
+
+### 5. Answer Generation
+
+The top-ranked passages are passed to Gemini as context for generating an answer.
+
+The API returns the answer, source information, and performance metrics.
 
 ## Project Structure
 
 ```text
 production-rag-hybrid-search/
+│
 ├── app/
-│   ├── api/             # API endpoints and request/response schemas
-│   ├── core/            # RAG pipeline and logging
-│   ├── database/        # Qdrant storage integration
-│   ├── generation/      # Gemini answer generation
-│   ├── ingestion/       # PDF loading, chunking, and storage
-│   └── retrieval/       # Embeddings, BM25, hybrid search, reranking
-├── evaluation/          # Retrieval evaluation scripts and datasets
-├── frontend/            # React application
-├── data/                # Local documents and vector database (not committed)
-├── requirements.txt     # Python dependencies
-├── .env.example         # Environment variable template
-└── .gitignore
+│   ├── api/
+│   ├── core/
+│   ├── database/
+│   ├── generation/
+│   ├── ingestion/
+│   └── retrieval/
+│
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   └── qdrant/
+│
+├── evaluation/
+│   ├── evaluate_retrieval.py
+│   ├── questions.json
+│   └── evaluation_results.json
+│
+├── frontend/
+│
+├── tests/
+│   ├── test_api.py
+│   ├── test_pipeline.py
+│   └── test_schemas.py
+│
+├── notebooks/
+├── .env.example
+├── .gitignore
+├── requirements.txt
+└── README.md
 ```
 
-## Getting Started
+## Installation and Setup
 
 ### Prerequisites
 
 - Python 3.13
 - Node.js and npm
-- A Google Gemini API key
-- The documents you want to index
+- Git
+- A Gemini API key
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Ayushchhetri09/production-rag-hybrid-search.git
+git clone https://github.com/YOUR_USERNAME/production-rag-hybrid-search.git
 cd production-rag-hybrid-search
 ```
 
-### 2. Set up Python
+Replace `YOUR_USERNAME` with the GitHub account hosting the repository.
 
-Create and activate a virtual environment.
+### 2. Create a Python Virtual Environment
 
-**Windows PowerShell:**
+Windows PowerShell:
 
 ```powershell
 py -3.13 -m venv .venv
-.\.venv\Scripts\Activate.ps1
+.venv\Scripts\Activate.ps1
+```
+
+Install the backend dependencies:
+
+```powershell
 python -m pip install -r requirements.txt
 ```
 
-### 3. Configure environment variables
+### 3. Configure Environment Variables
 
-Create a `.env` file in the project root using `.env.example` as a template.
+Create a local `.env` file using `.env.example` as a template.
+
+Add your Gemini API key:
 
 ```env
 GEMINI_API_KEY=your_gemini_api_key
 ```
 
-Replace the placeholder with your own API key. Never commit your `.env` file or expose your API key publicly.
+Do not commit your `.env` file or expose API keys in source code, screenshots, or public repositories.
 
-### 4. Prepare the documents
+### 4. Install Frontend Dependencies
 
-Place your PDF documents in the directory expected by the ingestion code. Run the ingestion and indexing commands implemented in the project to extract text, create chunks, generate embeddings, and populate Qdrant.
+```powershell
+cd frontend
+npm install
+cd ..
+```
 
-### 5. Start the backend
+### 5. Prepare the Document Corpus
 
-Activate the virtual environment, then run the FastAPI application using the module and command configured in `app/api/main.py`.
+Place the PDF documents you want to index in the appropriate document ingestion location.
 
-For example, if the FastAPI instance is named `app` in that module:
+Run the project's document ingestion workflow to extract text, create chunks, generate embeddings, and index the documents.
+
+The vector store and BM25 index must be available before querying the application.
+
+## Running the Application
+
+### Start the Backend
+
+From the project root:
 
 ```powershell
 python -m uvicorn app.api.main:app --reload
 ```
 
-### 6. Start the frontend
+The API is available at:
+
+```text
+http://127.0.0.1:8000
+```
+
+Interactive API documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+### Start the Frontend
 
 Open a second terminal:
 
 ```powershell
 cd frontend
-npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite in your browser.
+Open the local URL provided by Vite, usually:
 
-> Note: Confirm that the backend and frontend API URLs, document-ingestion command, and required environment variables match your current implementation.
+```text
+http://localhost:5173
+```
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/` | API status |
+| GET | `/health` | Health check |
+| GET | `/documents` | List indexed documents |
+| POST | `/query` | Query the RAG pipeline |
+| POST | `/upload` | Upload and index a PDF |
+
+### Example Query
+
+Request:
+
+```json
+{
+  "question": "What is a spanning tree?"
+}
+```
+
+The query endpoint returns the answer, source information, and timing metrics.
 
 ## Evaluation
 
-The repository includes retrieval evaluation scripts and a question set to help assess whether relevant passages appear among the retrieved results.
+The retrieval pipeline is evaluated using labelled questions and relevant source pages.
 
-Evaluation should consider metrics such as:
+### Evaluation Metrics
 
-- **Recall@K:** Whether relevant passages appear within the top K retrieved results.
-- **MRR:** How highly the first relevant result is ranked.
-- **Latency:** How long retrieval takes for a query.
+**Hit@5**
 
-The current evaluation dataset is small and should be treated as an initial experiment, not conclusive evidence of general retrieval performance. A larger, carefully labelled dataset is needed for reliable comparisons.
+Measures whether at least one relevant document appears in the top five retrieved results.
+
+**Mean Reciprocal Rank@5 (MRR@5)**
+
+Measures how highly the first relevant result is ranked.
+
+**Recall@5**
+
+Measures how many of the labelled relevant documents are retrieved in the top five results.
+
+### Current Evaluation Results
+
+The current evaluation dataset contains 9 labelled questions.
+
+| Metric | Result |
+|---|---:|
+| Mean Hit@5 | 1.000 |
+| Mean MRR@5 | 0.781 |
+| Mean Recall@5 | 0.917 |
+
+These results represent the current labelled evaluation dataset. They should not be interpreted as a guarantee of performance across all documents or queries.
+
+Run the evaluation using:
+
+```powershell
+python evaluation/evaluate_retrieval.py
+```
+
+The evaluation results are saved in:
+
+```text
+evaluation/evaluation_results.json
+```
+
+## Automated Testing
+
+The project uses pytest to test API endpoints, pipeline behavior, request validation, response schemas, and error handling.
+
+The test suite uses mocked services for appropriate tests so that expensive models and external services do not need to be initialized.
+
+Run the tests:
+
+```powershell
+python -m pytest -q
+```
+
+Current test status:
+
+```text
+20 passed
+```
 
 ## Limitations
 
-- Retrieval quality depends on document extraction, chunk size, embedding quality, and query wording.
-- Generation quality depends on the relevance of retrieved context and the underlying language model.
-- Local Qdrant storage is intended for local development and is not configured here as a shared production database.
-- Automated pytest coverage is still a work in progress.
+- Retrieval quality depends on document quality, chunking, and the labelled evaluation dataset.
+- The current evaluation dataset is small and requires further expansion.
+- Gemini answer generation depends on API availability and quota limits.
+- The application requires documents to be ingested and indexed before they can be queried.
+- The current project is designed as a local demonstration and portfolio project; production deployment would require additional security, monitoring, and operational work.
 
 ## Future Improvements
 
-- Add automated unit and integration tests.
 - Expand the labelled retrieval evaluation dataset.
-- Compare semantic-only, BM25-only, and hybrid retrieval.
-- Measure Recall@K, MRR, and retrieval latency.
-- Add response streaming and improved error handling.
-- Add Docker-based deployment and production database configuration.
-- Improve observability with structured logs and request-level metrics.
+- Add more automated integration tests.
+- Improve retrieval evaluation across different document types.
+- Add authentication and access control.
+- Add deployment and monitoring.
+- Explore query expansion and retrieval optimization.
 
 ## Author
 
-**Ayush Chhetri**  
+Ayush Chhetri
+
 Electrical Engineering, NIT Silchar
 
 GitHub: [Ayushchhetri09](https://github.com/Ayushchhetri09)
