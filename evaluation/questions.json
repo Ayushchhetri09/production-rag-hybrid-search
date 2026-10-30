@@ -1,7 +1,7 @@
 
 [
   {
-    "question": "What is  Fusion?",
+    "question": "What is Fusion?",
     "relevant_pages": [
       {
         "source": "Deo_Graph Theory.pdf",
@@ -15,6 +15,101 @@
       {
         "source": "Thoreau, Henry D. - Walden_.pdf",
         "page": 49
+      }
+    ]
+  },
+  {
+    "question": "What is a cut-set in graph theory?",
+    "relevant_pages": [
+      {
+        "source": "Deo_Graph Theory.pdf",
+        "page": 94
+      },
+      {
+        "source": "Deo_Graph Theory.pdf",
+        "page": 95
+      },
+      {
+        "source": "Deo_Graph Theory.pdf",
+        "page": 97
+      },
+      {
+        "source": "Deo_Graph Theory.pdf",
+        "page": 192
+      }
+    ]
+  },
+  {
+    "question": "What is a spanning tree?",
+    "relevant_pages": [
+      {
+        "source": "Deo_Graph Theory.pdf",
+        "page": 79
+      },
+      {
+        "source": "Deo_Graph Theory.pdf",
+        "page": 86
+      },
+      {
+        "source": "Deo_Graph Theory.pdf",
+        "page": 89
+      }
+    ]
+  },
+  {
+     "question": "What is a fundamental cut-set?",
+     "relevant_pages": [
+      {
+        "source": "Deo_Graph Theory.pdf",
+        "page": 97
+      },
+      {
+      "source": "Deo_Graph Theory.pdf",
+      "page": 98
+      }
+    ]
+  },
+  {
+     "question": "What is a fundamental circuit?",
+     "relevant_pages": [
+      {
+      "source": "Deo_Graph Theory.pdf",
+      "page": 82
+      },
+      {
+      "source": "Deo_Graph Theory.pdf",
+      "page": 83
+      }
+    ]
+  },
+  {
+     "question": "What is the rank of a graph?",
+     "relevant_pages": [
+      {
+      "source": "Deo_Graph Theory.pdf",
+      "page": 81
+      }
+    ]
+  },
+  {
+     "question": "What is the nullity of a graph?",
+     "relevant_pages": [
+      {
+      "source": "Deo_Graph Theory.pdf",
+      "page": 81
+      }
+    ]
+  },
+  {
+     "question": "What is the incidence matrix of a graph?",
+     "relevant_pages": [
+      {
+      "source": "Deo_Graph Theory.pdf",
+      "page": 177
+      },
+      {
+      "source": "Deo_Graph Theory.pdf",
+      "page": 178
       }
     ]
   }

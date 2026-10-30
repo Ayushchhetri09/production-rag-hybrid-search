@@ -1,13 +1,13 @@
 {
   "summary": {
-    "questions_evaluated": 2,
+    "questions_evaluated": 9,
     "hit_at_5": 1.0,
-    "mrr_at_5": 1.0,
-    "recall_at_5": 1.0
+    "mrr_at_5": 0.7814814814814814,
+    "recall_at_5": 0.9166666666666666
   },
   "results": [
     {
-      "question": "What is  Fusion?",
+      "question": "What is Fusion?",
       "hit_at_5": 1.0,
       "mrr_at_5": 1.0,
       "recall_at_5": 1.0,
@@ -59,6 +59,202 @@
         [
           "Thoreau, Henry D. - Walden_.pdf",
           50
+        ]
+      ]
+    },
+    {
+      "question": "What is a cut-set in graph theory?",
+      "hit_at_5": 1.0,
+      "mrr_at_5": 1.0,
+      "recall_at_5": 0.75,
+      "retrieved_pages": [
+        [
+          "Deo_Graph Theory.pdf",
+          192
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          94
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          97
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          164
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          419
+        ]
+      ]
+    },
+    {
+      "question": "What is a spanning tree?",
+      "hit_at_5": 1.0,
+      "mrr_at_5": 1.0,
+      "recall_at_5": 1.0,
+      "retrieved_pages": [
+        [
+          "Deo_Graph Theory.pdf",
+          79
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          86
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          89
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          343
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          85
+        ]
+      ]
+    },
+    {
+      "question": "What is a fundamental cut-set?",
+      "hit_at_5": 1.0,
+      "mrr_at_5": 1.0,
+      "recall_at_5": 1.0,
+      "retrieved_pages": [
+        [
+          "Deo_Graph Theory.pdf",
+          98
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          101
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          97
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          194
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          102
+        ]
+      ]
+    },
+    {
+      "question": "What is a fundamental circuit?",
+      "hit_at_5": 1.0,
+      "mrr_at_5": 0.5,
+      "recall_at_5": 1.0,
+      "retrieved_pages": [
+        [
+          "Deo_Graph Theory.pdf",
+          184
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          83
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          350
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          82
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          353
+        ]
+      ]
+    },
+    {
+      "question": "What is the rank of a graph?",
+      "hit_at_5": 1.0,
+      "mrr_at_5": 0.2,
+      "recall_at_5": 1.0,
+      "retrieved_pages": [
+        [
+          "Deo_Graph Theory.pdf",
+          180
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          112
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          110
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          186
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          81
+        ]
+      ]
+    },
+    {
+      "question": "What is the nullity of a graph?",
+      "hit_at_5": 1.0,
+      "mrr_at_5": 0.3333333333333333,
+      "recall_at_5": 1.0,
+      "retrieved_pages": [
+        [
+          "Deo_Graph Theory.pdf",
+          112
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          26
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          81
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          176
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          110
+        ]
+      ]
+    },
+    {
+      "question": "What is the incidence matrix of a graph?",
+      "hit_at_5": 1.0,
+      "mrr_at_5": 1.0,
+      "recall_at_5": 0.5,
+      "retrieved_pages": [
+        [
+          "Deo_Graph Theory.pdf",
+          178
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          181
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          191
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          179
+        ],
+        [
+          "Deo_Graph Theory.pdf",
+          199
         ]
       ]
     }

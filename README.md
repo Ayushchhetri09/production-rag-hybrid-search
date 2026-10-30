@@ -59,7 +59,7 @@ flowchart TD
 | Backend API | FastAPI |
 | Frontend | React |
 | Frontend development server | Vite |
-| Model Hub | Hugging Face |
+| Model Hub | Hugging Face Hub |
 | Vector database | Qdrant |
 | Semantic retrieval | Sentence Transformers |
 | Keyword retrieval | BM25 |
